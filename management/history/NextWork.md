@@ -7,6 +7,9 @@
 
 ## 🚀 執行中任務 (Active - 最高優先)
 
+### [S69-HOTFIX2] 無法平倉 Bug 待驗收 🚨
+- [ ] **實盤驗證**：觀察 `CloseLong`/`CloseShort` 訊號是否能成功送往 BingX，確認 RiskManager `already has 1 open positions` 錯誤已徹底消失。
+
 ### [S69] 貝氏優化引擎 — FastAPI Sidecar 整合 🧠
 - [ ] **Phase 1: Python Sidecar**：實作基於 Optuna 的 FastAPI 服務。
 - [ ] **Phase 2: C# 整合**：實作 `BayesianSearchStrategy` 與非同步搜尋模型。
