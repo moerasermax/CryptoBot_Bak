@@ -7,13 +7,23 @@
 
 ## 🚀 執行中任務 (Active - 最高優先)
 
-### [S31-LIVE] 小額實盤試車 (GO LIVE!) 💰
-- [ ] **1x 槓桿首單測試**：執行真實 USDT 帳戶的 5-10 USDT 首筆成交。
-- [ ] **風控雙重確認**：確保熔斷器 (S28) 與巡檢工具 (S61) 已啟用。
+### [S69] 貝氏優化引擎 — FastAPI Sidecar 整合 🧠
+- [ ] **Phase 1: Python Sidecar**：實作基於 Optuna 的 FastAPI 服務。
+- [ ] **Phase 2: C# 整合**：實作 `BayesianSearchStrategy` 與非同步搜尋模型。
 
 ---
 
-## ✅ 已完工項目 (Completed)
+## ⏳ 待處理或延後項目 (Pending / Backlog)
+
+### [S31-LIVE] 小額實盤試車 (GO LIVE!) 💰
+- [ ] **等待使用者授權**：目前維持模擬盤，實務單測試延後執行。
+
+
+---
+
+## ✅ 已驗證項目 (Committed to Feature)
+- [x] **[S68] 環境清理 — 停用種子策略機制**：已關閉 Seed 並清理 DB (Commit: 67f958e, feature branch)。 (2026-04-26)
+- [x] **[S67] 優化器架構升級 — 可插拔搜尋演算法**：驗收通過並已存檔 (Commit: a4241cf, feature branch)。 (2026-04-26)
 - [x] **[S66-E] 啟動期時鐘漂移 Pre-flight Check**：ASCII Banner 與 `AbortIfSkewExceedsMs` 攔截機制。 ✅ (2026-04-25)
 - [x] **[S66-D] NTP 時鐘漂移防護**：NtpDriftMonitor 與 RiskManager 1000ms 熔斷防線。 ✅ (2026-04-25)
 - [x] **[S66-C] 結構化日誌與 Trace ID**：全鏈路日誌透傳與 `BeginScope` 決策資產化。 ✅ (2026-04-25)
