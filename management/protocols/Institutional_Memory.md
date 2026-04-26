@@ -478,4 +478,57 @@ git log --all -p | grep "敏感片段"
 
 ---
 
+## L8 · PM 驗收測試計畫忽略 DiagnosticTool（來源：S69-HOTFIX_CLOSE_SIGNAL_RISK，2026-04-26）
+
+### 症狀
+- 工程師（ClaudeCode）交付的 `🧪 PM 驗收測試計畫` 中：
+  - 前置檢查只用 OS `tasklist`，沒驗 API Mode（IRON §② 金鑰唯一路徑檢查缺席）。
+  - 情境 3「實盤平倉行為驗證」寫成「啟動策略 → 觀察 ConsoleApp log」，未列任何 DiagnosticTool 指令。
+  - 期望輸出錨點是「log 字串 grep」而非可重現的 probe 結構化輸出。
+- 使用者抓到後直接質疑「為啥沒用 CryptoBot.DiagnosticTool」。
+
+### 根因
+寫驗收計畫時偷懶往「肉眼觀察 log」靠攏，未先盤點 DiagnosticTool 已存在的命令並 map 到 VCP。本專案 DiagnosticTool 已有 10 個命令（`env` / `strategies` / `s66a_check-order` / `s66d_check-skew` / `s61_sync-orders` 等），覆蓋幾乎所有可重現驗收場景，工程師卻未引用。違反三條：
+1. **DISCIPLINE §1.4 實證先行**：log 不是結構化實證。
+2. **DISCIPLINE §7「用具體 DiagnosticTool 指令驗證，禁止只寫文字描述」**（前置檢查條款）。
+3. **DISCIPLINE §5.1 禁未經實證的描述性括號**：「觀察 log 出現 X」無法當作可重現抽驗。
+
+### 診斷
+工程師交付前自問：
+1. 本膠囊涉及哪些領域？（風控 / 下單 / 對帳 / 時鐘 / 配置 / DB / WS）
+2. 每個領域對應到哪個 DiagnosticTool 命令？答不出來代表沒準備好交付。
+3. 每個 VCP 的「期望輸出錨點」是 DiagnosticTool stdout 的具體字串嗎？若是「log 出現 X」直接退回重寫。
+
+### 修法
+補強 S69-HOTFIX_CLOSE_SIGNAL_RISK 情境 3 為四步 probe 鏈：
+- `env` — Demo 雙保險（IRON §②）
+- `s66d_check-skew` — NTP 偏差預檢（避免觀察項命中污染判讀）
+- `strategies` — 確認測試策略 status
+- 觸發開倉 + 平倉，**抄下 ClientOrderId**
+- `s66a_check-order <Cid>` — 端到端證明平倉單下出且交易所成交
+- `s61_sync-orders` — 確認無幽靈單殘留
+
+每一步都有 stdout 結構化錨點與失敗解讀表，符合 §7 結構。
+
+### 預防
+- **工程師交付前自查清單新增一條**：本膠囊 VCP 是否含 DiagnosticTool 指令？若涉及「BingX / DB / 風控 / 對帳 / 時鐘 / 配置 / 訂單」任一面向但 VCP 全是 `dotnet build|test` + `tasklist` → 不合格，重寫。
+- **領域對照表**（工程師日後翻這張表生 VCP）：
+
+| 涉及領域 | 對應 DiagnosticTool 命令 |
+|---|---|
+| API Mode / 金鑰 / 餘額 | `env` |
+| 策略 status / 配置 | `strategies` |
+| 訂單下出 / 對帳 | `s66a_check-order <Cid>` |
+| NTP 漂移 | `s66d_check-skew` |
+| 幽靈單清查 | `s61_sync-orders <Symbol>` |
+| K 線資料一致性 | `s60_check-kline <Symbol> <Interval>` |
+| 多週期對齊 | `s63_check-mtf <Symbol>` |
+| WebSocket 連線 | `s31_check-ws` |
+| 下單量精度 | `size <entryPrice> <strategyName>` |
+| BingX errorCode 探針 | `probe-bingx [Symbol]`（DEMO ONLY） |
+
+- **DISCIPLINE §1.6 v1.11 自查 Checklist 第 4 條已寫過此原則**（「每個 VCP 含具體 probe 指令 + 期望輸出錨點 + 失敗解讀表」），但僅在「強化抽驗模式」啟動時 enforced。本案教訓：**§7 結構要求對所有膠囊適用，不應等到強化抽驗模式才補**。下版 DISCIPLINE 修訂時，工程師應推動把這條從「強化抽驗模式條件項」升級為「§7 全域強制項」。
+
+---
+
 _「所有沒寫下來的教訓，都會變成下次的 Bug。」_
