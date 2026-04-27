@@ -25,6 +25,7 @@
 ---
 
 ## ✅ 已驗證項目 (Committed to Feature)
+- [x] **[S70] Dashboard PnL 顯示語意修正**：修復時區錯位（UTC → Asia/Taipei 可配置）+ 拆分 TodayRealizedPnL / OpenUnrealizedPnL 兩欄位；新增 `LocalDayBoundary` 純函式 + 9 筆跨日界測試；伴隨撤銷誤判膠囊 S70 / S70-A 並完成 §1.6 強化抽驗收尾。詳見 `HANDOFF_23.md` 與 `Institutional_Memory §S70`。✅ (2026-04-27)
 - [x] **[S68] 環境清理 — 停用種子策略機制**：已關閉 Seed 並清理 DB (Commit: 67f958e, feature branch)。 (2026-04-26)
 - [x] **[S67] 優化器架構升級 — 可插拔搜尋演算法**：驗收通過並已存檔 (Commit: a4241cf, feature branch)。 (2026-04-26)
 - [x] **[S66-E] 啟動期時鐘漂移 Pre-flight Check**：ASCII Banner 與 `AbortIfSkewExceedsMs` 攔截機制。 ✅ (2026-04-25)

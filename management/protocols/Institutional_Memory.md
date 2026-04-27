@@ -531,4 +531,102 @@ git log --all -p | grep "敏感片段"
 
 ---
 
+## §S70 跨時區資料判讀與 Dashboard 顯示語意分離原則（2026-04-27）
+
+### 症狀
+
+使用者觀察到 Dashboard「TODAY P&L」卡片顯示與真實虧損方向不符或數字偏差顯著。具體場景：使用者台灣時間 04-27 06:01 觀察，依交易所明細手算今日真實淨損益 ≈ −1,998 USDT，但 Dashboard 卡片可能顯示為正值或數字偏差大。
+
+PM 在最初診斷時亦因「DB 時間欄是 UTC、PM 在 UTC+8 環境下閱讀」誤判為「DB 紀錄停在 04-23、資料斷鏈」，連續產出兩份基於誤判的膠囊（已 VOIDED）。
+
+### 根因（兩條獨立 bug）
+
+#### 根因 #1 — 時區錯位
+
+`CryptoBot.ConsoleApp/Services/DashboardStatsService.cs:42`：
+
+```csharp
+var dayStart = DateTime.UtcNow.Date;
+```
+
+`DateTime.UtcNow.Date` 在 UTC+8 環境下定義的「今日 00:00」實際對應台灣時間 08:00。使用者眼中的「今日」（台灣 00:00 起）與此窗口錯位 8 小時，當天起始 8 小時的窗口會包含**昨日後段（台灣 08:00 ~ 24:00）的交易**。
+
+#### 根因 #2 — 顯示語意混算
+
+`DashboardStatsService.cs:53`：
+
+```csharp
+TodayPnL: realizedToday + unrealized,
+```
+
+欄位命名為「TodayPnL」但實際內容為「今日已實現 + 當前所有開倉浮動」。`Position.UnrealizedPnL`（`Position.cs:82-92`）不分今日昨日，全部 OpenPositions 浮動加總進來。命名與內容語意嚴重不符。
+
+兩條 bug 疊加 → 卡片數字無法被使用者用任何單一心智模型解讀。
+
+### 診斷
+
+#### 1. SQL 對帳（依使用者本地時區）
+
+```sql
+SELECT ROUND(SUM(RealizedPnL),2) AS NetPnL, COUNT(*) AS N
+FROM Positions
+WHERE ClosedAt >= datetime('now','start of day','-8 hours')
+  AND ClosedAt IS NOT NULL;
+```
+
+`-8 hours` 是 SQLite 對 UTC 時間的補償，用以對齊台灣 00:00 起算的窗口。將結果與交易所明細手算對比，差距 < 5 USDT 即計算路徑無誤。
+
+#### 2. 比對交易所明細手算
+
+每筆交易兩個損益數字：
+- 數字 1（負較大）= **淨 PnL（已扣手續費）** ← 對應系統 `Position.RealizedPnL`
+- 數字 2（負較小）= **毛 PnL（grossPnL，未扣手續費）**
+
+判讀「真實落袋金額」應看數字 1。
+
+### 修法（採方案 C：A + B 同時做）
+
+#### A. 時區可配置
+
+```csharp
+// appsettings.json：
+// "Display": { "LocalTimeZone": "Asia/Taipei" }
+
+var tzId = _config["Display:LocalTimeZone"] ?? "Asia/Taipei";
+var localTz = TimeZoneInfo.FindSystemTimeZoneById(tzId);
+var nowLocal = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, localTz);
+var dayStartLocal = nowLocal.Date;
+var dayStartUtc = TimeZoneInfo.ConvertTimeToUtc(dayStartLocal, localTz);
+```
+
+#### B. DTO 拆分
+
+```csharp
+public sealed record DashboardStatsUpdate(
+    DateTime Timestamp,
+    decimal TotalEquity,
+    decimal TodayRealizedPnL,    // 今日已實現（依本地時區）
+    decimal OpenUnrealizedPnL,   // 當前所有開倉浮動（不限今日）
+    int ActiveStrategyCount);
+```
+
+UI 卡片分區顯示，禁止合併。
+
+### 預防（鐵則化）
+
+1. **DB 一律存 UTC**（已是慣例）；**UI / Dashboard / 任何「日界」型 query 一律先換算到使用者本地時區再計算**
+2. **任何「今日」「昨日」「本週」型語意 query 必須在實作旁註明所用時區**（避免下次同類偏差）
+3. **PnL 顯示一律拆「已實現」與「浮動」兩欄位**，不混算（合併會掩蓋真實狀態，違反 IRON ⑤ 風控透明化）
+4. **PM / 工程師判讀時間軸資料前**：先確認資料源時區（UTC？本地？），用 `datetime(col,'+8 hours')` 等 SQL 函數明示換算，不用心算
+5. **時區配置可配置化**：避免硬編碼 `Asia/Taipei`，未來海外使用者擴展不再撞同類雷
+
+### 何時要回頭讀本章節
+
+- 任何涉及 Dashboard 卡片 / 報表 / Email 通知時間欄位的需求
+- 任何「以日 / 週 / 月為單位的 PnL / 成交量 / 損益」查詢
+- 跨時區使用者擴展時（例如海外部署）
+- PM 判讀使用者「最近 N 筆 / 今天 / 昨天」資料前
+
+---
+
 _「所有沒寫下來的教訓，都會變成下次的 Bug。」_
