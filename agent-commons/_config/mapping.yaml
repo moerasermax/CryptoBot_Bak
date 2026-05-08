@@ -1,0 +1,38 @@
+version: "0.5.0"
+
+# === Common Memory Root ===
+common_memory_root: agent-commons/
+
+# === 目錄映射（皆相對於 common_memory_root）===
+# 註：shared 為 schema namespace，不代表實體目錄，其映射內容直接位於根目錄（即 shared/ 不應存在）
+shared:
+  capsules: capsules/
+  handoffs: handoffs/
+  protocols: protocols/
+  institutional_memory:
+    - institutional-memory/_root.md
+  nextwork: nextwork.md
+  draft_context: DRAFT_CONTEXT.md
+  archive: handoffs/archive/
+
+roles:
+  pm:
+    sessions: roles/pm/sessions/
+    drafts: roles/pm/drafts/
+    reflections: roles/pm/reflections/
+    private: roles/pm/private/
+  engineer:
+    sessions: roles/engineer/sessions/
+    drafts: roles/engineer/drafts/
+    reflections: roles/engineer/reflections/
+    private: roles/engineer/private/
+
+# === 領域公理 ===
+domain_axioms:
+  primary: protocols/IRON.md
+  alias: iron
+
+# === 系統狀態 ===
+state:
+  output_mode_file: state/output_mode
+  failure_mode_log: state/failure_mode_log.md
