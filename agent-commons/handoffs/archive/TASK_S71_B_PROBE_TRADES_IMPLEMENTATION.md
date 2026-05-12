@@ -1,6 +1,6 @@
 # TASK_S71_B_PROBE_TRADES_IMPLEMENTATION
 
-> **Status**: PENDING-ASSESSMENT
+> **Status**: COMPLETED
 > **Priority**: CRITICAL (Evidence Collection)
 > **Goal**: 實作 DiagnosticTool 之 `probe-trades` 命令，解決 S71 中「缺乏交易所實證交易紀錄」的技術斷點。
 

@@ -1,5 +1,6 @@
 # 膠囊：TASK_S70_DASHBOARD_PNL_CORRECTION
 
+> **Status**: COMPLETED
 > **建立日期**：2026-04-27（工程師代寫，使用者授權選項 B 單次例外）
 > **位階**：取代已撤銷的 `TASK_S70_VOIDED_FALSE_ALARM.md` 與 `TASK_S70_A_VOIDED_FALSE_ALARM.md`
 > **依據**：S70 誤判事件診斷收斂，工程師對話內 §1-§4 紀錄為原文資料源

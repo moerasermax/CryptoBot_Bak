@@ -1,0 +1,15 @@
+description = "執行 AgentCharter 系統健康檢查並產出 Health Report"
+
+prompt = """
+你採用了 AgentCharter。請執行 /charter-doctor 系統健康檢查（Mode A）：
+
+1. 檢查 `agent-commons/_config/profile.yaml` 與 `mapping.yaml` 存在。
+2. 確認 `mapping.yaml` 中定義的目錄皆存在（例如 capsules/、handoffs/ 等），且 `agent-commons/shared/` 目錄**不得存在**（E602）。
+3. 檢查 `agent-commons/protocols/IRON.md` 是否存在，並驗證其 frontmatter 狀態（若為 AI-DRAFTED 應報 E606 錯誤）。
+4. 檢查 `agent-commons/roles/<role>/_role.md` 狀態。
+5. 檢查 `agent-commons/state/failure_mode_log.md` 存在。
+6. 檢查 `.gemini/commands/pm-init.toml` 和 `.claude/commands/engineer-init.md` (若有) 是否存在。
+7. 產出如同 `doctor-spec.md §4` 格式的 health report 給 user 檢視。
+
+若附加 `--fix` 參數，則進入 Mode C (Gap 修復) 流程，嘗試填補遺漏的目錄或檔案。
+"""

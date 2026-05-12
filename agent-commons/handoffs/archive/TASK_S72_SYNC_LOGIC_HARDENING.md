@@ -1,6 +1,6 @@
 # TASK_S72_SYNC_LOGIC_HARDENING
 
-> **Status**: ACTIVE
+> **Status**: COMPLETED
 > **Owner**: Engineer (Claude Code)
 > **Priority**: CRITICAL (Data Integrity)
 > **Goal**: 修正同步邏輯漏洞，清理幽靈損益 (+1,902)，處理殭屍 Partial 單，落實實證對帳。

@@ -46,6 +46,8 @@
 | 2026-05-04 | — | charter-init scaffold | — | 初始建立，尚無 AI 接任 |
 | 2026-05-04 | Claude Code | 自我具象化完成（doctor schema 通過 0 errors） | ✅ `.claude/commands/engineer-init.md` | Status 維持 PROVISIONAL — 等 user explicit 授權後升 ACTIVE 並寫 Sign-in Log |
 | 2026-05-04 | Claude Code（Opus 4.7 / 1M context） | Sign-in：user explicit 授權「你可以登入了」→ Status PROVISIONAL → ACTIVE | - | 首位接任 Engineer；Claude Code 全工具能力（Read/Edit/Bash/Grep/Glob/Agent/Hook）|
+| 2026-05-08 | Claude Code（Opus 4.7 / 1M context） | Session 重啟 sign-in（user explicit「請你登入」、跑 `/engineer-init` 完成）| - | 同身份接班；Status 維持 ACTIVE；強化抽驗模式 + 結構性失靈裁決延續（A004/A005 PM Gemini agent-commons 改寫事件，user 2026-05-07 verdict 未解除）|
+| 2026-05-12 | Claude Code（Opus 4.7 / 1M context） | Session 重啟 sign-in（user explicit「請登入」、跑 `/engineer-init` 完成）| - | 同身份接班；Status 維持 ACTIVE；強化抽驗模式 + 結構性失靈裁決延續；接續 DRAFT_CONTEXT.md 142 行 S74-C Phase 1+2 完工狀態，Phase 3-5 待續 |
 
 ---
 

@@ -1,6 +1,6 @@
 # TASK_S71_DATA_DISCREPANCY_DIAGNOSTIC
 
-> **Status**: ACTIVE
+> **Status**: COMPLETED
 > **Owner**: Engineer (Claude Code)
 > **Priority**: CRITICAL (Integrity Risk)
 > **Goal**: 診斷並修正 Dashboard 顯示與實體交易脫節之問題（Phantom Profit +1,902）。

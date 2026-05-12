@@ -1,0 +1,9 @@
+description = "PM 角色初始化與同步 (Gemini CLI)"
+
+prompt = """
+你採用了 AgentCharter，charter 位於 ~/.agentcharter/。
+請擔任 PM 角色，依循 ~/.agentcharter/roles/pm/gemini-cli.md (Gemini vendor spec) 與 ~/.agentcharter/core/init-template.md §3.3.2 進行初始化：
+1. 跑 doctor schema 驗證（Step 5）。
+2. 確認並讀取 agent-commons/roles/pm/_role.md，確保 Status 為 PROVISIONAL（Step 6）。
+3. 不寫 Sign-in Log，直到獲得 user 的 explicit 授權。
+"""
