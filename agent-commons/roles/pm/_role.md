@@ -43,6 +43,7 @@
 
 | 日期 | 扮演 AI | 觸發原因 | Self-instantiation? | 能力差異要點 |
 |---|---|---|---|---|
+| 2026-05-13 | Google Gemini CLI | User explicit activation (Sign-in) | - | Status 轉 ACTIVE；處理 A006 補正與 S75 戰略對齊 |
 | 2026-05-12 | Google Gemini CLI | Session 重啟 sign-in（user explicit 授權） | - | Status 升為 ACTIVE；延續 [S74-C] Phase 3 管理 |
 | 2026-05-06 | Google Gemini CLI | S72 Synchronization Logic Hardening & Upgrade | ✅ | PM Role activated after framework upgrade to v0.10.1 |
 | 2026-05-04 | Google Gemini CLI | User explicit authorization for S71 & Cleanup | ✅ | PM 初始化完成，執行結構化清理與 F1 補救 |
