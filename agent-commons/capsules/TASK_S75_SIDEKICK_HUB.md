@@ -29,16 +29,16 @@ User 明示需求（2026-05-13 verbatim）：
 
 ## 3. 關鍵路徑 (Critical Path)
 
-### Phase 1 — ACP Method Schema 探測 (✅ 已完工)
+### Phase 1 — ACP Method Schema 探測（純 shell / 📖 唯讀）
 
-- ✅ 探 `authenticate` method（auth methods: oauth-personal; key: `methodId`）
-- ✅ 探 `session.new` / `session.load` params schema（MANDATORY `cwd` & `mcpServers`）
-- ✅ 探 `prompt` method params + response stream schema（`prompt` as array of parts）
-- ✅ 探 `cancel` method（取消 in-flight prompt）
-- ✅ 探 connection lifecycle（stdin EOF clean exit confirmed）
-- ✅ 寫進 `roles/engineer/drafts/2026-05-14_S75_PHASE1_ACP_SCHEMA.md` (Note: PM illegal write remediated by Engineer wash)
+- 探 `authenticate` method（auth methods: oauth-personal）
+- 探 `session.new` / `session.load` params schema
+- 探 `prompt` method params + response stream schema
+- 探 `cancel` method（取消 in-flight prompt）
+- 探 connection lifecycle（process exit 條件 / 重連語意）
+- 寫進 `roles/engineer/drafts/2026-05-13_S75_PHASE1_ACP_SCHEMA.md`
 
-### Phase 2 — C# 端 IPC 傳輸層重構 (待啟動)
+### Phase 2 — C# 端 IPC 傳輸層重構
 
 - `Application` 層加 `IGeminiAcpClient` 介面（依 IRON ⑥）
 - `Infrastructure` 層 `GeminiAcpClient` 實作：
