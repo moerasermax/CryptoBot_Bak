@@ -9,8 +9,8 @@
 
 - **Spec**：引用 AgentCharter `roles/pm/_spec.md`
 - **AI 實作版**：引用 AgentCharter `roles/pm/gemini-cli.md`（Gemini CLI）或 `roles/pm/claude-code.md`
-- **Status**：`ACTIVE`
-- **當前扮演 AI**：Google Gemini CLI (ACTIVE)
+- **Status**：`PROVISIONAL`
+- **當前扮演 AI**：Google Gemini CLI (PROVISIONAL)
 - **當值期間**：2026-05-12 起
 
 ### Status 二態（v0.7.0 加）
