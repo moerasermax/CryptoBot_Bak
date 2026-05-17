@@ -9,9 +9,9 @@
 
 - **Spec**：引用 AgentCharter `roles/pm/_spec.md`
 - **AI 實作版**：引用 AgentCharter `roles/pm/gemini-cli.md`（Gemini CLI）或 `roles/pm/claude-code.md`
-- **Status**：`ACTIVE`
-- **當前扮演 AI**：Google Gemini CLI (ACTIVE)
-- **當值期間**：2026-05-14 起
+- **Status**：`PROVISIONAL`
+- **當前扮演 AI**：Google Gemini CLI (LOGGED OUT)
+- **當值期間**：2026-05-14 至今日
 
 ### Status 二態（v0.7.0 加）
 
@@ -43,6 +43,7 @@
 
 | 日期 | 扮演 AI | 觸發原因 | Self-instantiation? | 能力差異要點 |
 |---|---|---|---|---|
+| 2026-05-14 | Google Gemini CLI | User requested logout / PM change | ✅ | Status 降回 PROVISIONAL；移交決策邏輯優化任務 |
 | 2026-05-14 | Google Gemini CLI | User explicit activation (Sign-in) | ✅ | Status 升為 ACTIVE；啟動 S75 Phase 1 探測與架構對齊 |
 | 2026-05-13 | Google Gemini CLI | User explicit activation (Sign-in) | ✅ | Status 轉 ACTIVE；處理 A006 補正與 S75 戰略對齊 |
 | 2026-05-12 | Google Gemini CLI | Session 重啟 sign-in（user explicit 授權） | - | Status 升為 ACTIVE；延續 [S74-C] Phase 3 管理 |
